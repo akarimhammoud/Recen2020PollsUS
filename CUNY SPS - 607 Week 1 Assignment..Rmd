@@ -1,0 +1,76 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# Week 1 Assignment – Loading Data into a Data Frame
+
+The goal of this project is to analyze the US election polls between Trump and Biden and all of the other presedential candidates in 2020.
+We have a dataset combines the many different polls with the percentages of each candidte got in these polls.
+
+the original data is from https://data.fivethirtyeight.com/. 
+I have added the row data on new repository on Github via the link 'https://raw.githubusercontent.com/akarimhammoud/Recen2020PollsUS/master/president_polls.csv'
+
+# First we get the data from Github
+``` {r}
+url <- "https://raw.githubusercontent.com/akarimhammoud/Recen2020PollsUS/master/president_polls.csv"
+Polls <- read.csv(file= url, header=TRUE)
+head(Polls)
+```
+
+# Summary of the data
+```{r}
+summary(Polls)
+```
+
+# Create data frame with subset of few columns from the data
+```{r}
+myframe <- subset(Polls, select = c(state, pollster, sample_size, created_at, answer, pct ))
+head(myframe)
+```
+
+# Change Column Names
+```{r}
+colnames(myframe) <- c("state", "pollster", "size", "date", "candidate", "percentage")
+head(myframe)
+```
+
+
+# Create file and call it 2020polls.csv.
+``` {r}
+write.csv(myframe, file="2020polls.csv", row.names=FALSE)
+getwd()
+``` 
+
+# After creating a repository on github and upload the file to it.
+```{r}
+url <- "https://raw.githubusercontent.com/akarimhammoud/Recen2020PollsUS/master/2020polls.csv"
+Pollsfile <- read.csv(file= url, header=TRUE)
+head(Pollsfile)
+```
+
+# Change "Biden" to "Joe Biden" and "Trump" to "Donald Trump" in the file
+``` {r}
+Pollsfile$candidate <- sub("Biden", "Joe Biden", Pollsfile$candidate)
+Pollsfile$candidate <- sub("Trump", "Donald Trump", Pollsfile$candidate)
+head(Pollsfile)
+``` 
+#
+```{r}
+require(ggplot2)
+```
+
+# We present the presedential candidates on a bar chart.
+```{r}
+barplot(table(Pollsfile$candidate ), main = "candidate")
+```
+
+# Conclusion: 
+As we see in the chart some presednetial candidates droped off race earlier than others thats what some of them shows on the polls more than the other and of course the major two candidate that most of the polling show are Biden and Trump.
+
+# Useful Urls:
+The data is from https://data.fivethirtyeight.com/'. 
+the original data was saved to: https://raw.githubusercontent.com/akarimhammoud/Recen2020PollsUS/master/president_polls.csv'
+The new frame was saved at: "https://raw.githubusercontent.com/akarimhammoud/Recen2020PollsUS/master/2020polls.csv"
+
+
